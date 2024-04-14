@@ -1,5 +1,9 @@
 import streamlit as st
 
+
+st.title('Welcome to ResumeFit 👋')
+st.markdown('Helping you align your resume with your job aspirations!')
+
 # Set the page config to set the layout and initial settings of the app
 st.set_page_config(page_title='ResumeFit', page_icon=':briefcase:', layout='wide')
 
