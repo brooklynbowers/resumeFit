@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import os
 
 # Ensure the OpenAI API key is set
@@ -23,7 +23,7 @@ def compare_resume_to_job_description(resume_text, job_description_text):
     
     try:
         # Call the OpenAI API using the updated method with specified parameters
-        response = client.Completion.create(
+        response = openai.Completion.create(
             model="gpt-3.5-turbo",  # Using the specific model
             prompt=prompt,
             max_tokens=500,
