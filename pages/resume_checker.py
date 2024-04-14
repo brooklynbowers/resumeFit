@@ -1,15 +1,24 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import os
 
 # Ensure the OpenAI API key is set
 api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    st.error("OpenAI API key is not set. Please set it in your environment variables.")
-    st.stop()
+client = OpenAI(api_key=api_key)
+
+# Resume Analyzer UI
+st.title('Resume Analyzer 🔎📄')
+st.markdown('A useful tool to analyze resume skills, experience, and education against a prospective job description.')
 
 # Initialize the OpenAI API
 def compare_resume_to_job_description(resume_text, job_description_text):
+    if not api_key:
+        st.error("OpenAI API key is not set. Please set it in your environment variables.")
+        return
+    
+    client = OpenAI(api_key=api_key)
+    model = "gpt-3.5-turbo"  # Using the GPT-3.5 model
+    
     # Prepare the prompt for the AI
     prompt = f"""
     Resume: {resume_text}
@@ -36,10 +45,6 @@ def compare_resume_to_job_description(resume_text, job_description_text):
     except Exception as e:  # This will catch any exception
         st.error(f"Error calling the OpenAI API: {e}")
         return None
-
-# Resume Analyzer UI
-st.title('Resume Analyzer 🔎📄')
-st.markdown('A useful tool to analyze resume skills, experience, and education against a prospective job description.')
 
 # Input fields for resume and job description
 resume_text = st.text_area("Paste your resume here:", height=300)
