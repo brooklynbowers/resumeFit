@@ -10,12 +10,6 @@ image_url = 'https://pixabay.com/get/g6b8c4bbb6bcd5ee96361669ce1369a05fb61692044
 st.image(image_url, caption='HR Process - Image courtesy of Pixabay', width=535)
 
 
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    st.error("OpenAI API key is not set. Please set it in your environment variables.")
-else:
-    # Initialize the OpenAI client
-    client = openai.OpenAI(api_key=api_key)
 
 # Possibly set up some initial session state variables or app-wide configurations here
 # ...
