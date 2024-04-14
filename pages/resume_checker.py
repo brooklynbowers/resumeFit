@@ -37,7 +37,7 @@ def compare_resume_to_job_description(resume_text, job_description_text):
         # Extract the response
         return response.choices[0].text.strip()
 
-    except openai.OpenAIError as e:  # Corrected exception handling
+    except openai.Error as e:  # Corrected exception handling
         st.error(f"Error calling the OpenAI API: {e}")
         return None
 
