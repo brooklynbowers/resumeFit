@@ -18,33 +18,21 @@ def compare_resume_to_job_description(resume_text, job_description_text):
     
     client = OpenAI(api_key=api_key)
     model = "gpt-3.5-turbo"  # Using the GPT-3.5 model
-    
-    # Prepare the prompt for the AI
-    prompt = f"""
-    Resume: {resume_text}
-    
-    Job Description: {job_description_text}
-    
-    Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.
-    """
-    
-    try:
-        # Call the OpenAI API using the updated method
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Using the specific model
-            prompt=prompt,
-            max_tokens=500,
-            temperature=0,  # Set temperature to 0 for consistency
-            stop=["\n"],  # Assuming you want to stop the response at the first newline
-            api_key=api_key  # Ensure to pass the API key
-        )
-        
-        # Extract the response
-        return response['choices'][0]['text'].strip()
 
-    except Exception as e:  # This will catch any exception
-        st.error(f"Error calling the OpenAI API: {e}")
-        return None
+    # Instructions for the AI (adjust if needed)
+    messages = [
+        {"role": "system", "content": "You are an assistant who helps individuals identify gaps in their resumes based on job descriptions."},
+        {"role": "user", "content": f"Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.\n{text}"}
+    ]
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=0  # Lower temperature for less random responses
+    )
+    return response.choices[0].message.content
+    
+   
 
 # Input fields for resume and job description
 resume_text = st.text_area("Paste your resume here:", height=300)
