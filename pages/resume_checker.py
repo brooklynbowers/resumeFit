@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import openai 
 import os
 
 # Get your OpenAI API key from environment variables
