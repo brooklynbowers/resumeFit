@@ -35,7 +35,16 @@ def analyze_text(text):
     )
     return response.choices[0].message.content
 
+# Input fields for resume and job description
+resume_text = st.text_area("Paste your resume here:", height=300)
+job_description_text = st.text_area("Paste the job description here:", height=300)
 
+# Button to trigger the analysis
+if st.button('Analyze Resume'):
+    with st.spinner('Analyzing...'):
+        result = compare_resume_to_job_description(resume_text, job_description_text)
+        if result:
+            st.write(result)
 
 
 
