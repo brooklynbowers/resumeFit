@@ -42,7 +42,7 @@ def compare_resume_to_job_description(resume_text, job_description_text):
         return None
 
 # Resume Analyzer UI
-st.title('Resume Analyzer')
+st.title('Resume Analyzer 🔎📄')
 st.markdown('A useful tool to analyze resume skills, experience, and education against a prospective job description.')
 
 # Input fields for resume and job description
