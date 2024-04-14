@@ -22,7 +22,7 @@ def compare_resume_to_job_description(resume_text, job_description_text):
     # Instructions for the AI (adjust if needed)
     messages = [
         {"role": "system", "content": "You are an assistant who helps individuals identify gaps in their resumes based on job descriptions."},
-        {"role": "user", "content": f"Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.\n{text}"}
+        {"role": "user", "content": f"Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.\n{resume_text, job_description_text}"}
     ]
 
     response = client.chat.completions.create(
