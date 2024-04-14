@@ -7,6 +7,10 @@ st.set_page_config(page_title='ResumeFit', page_icon=':briefcase:', layout='wide
 st.title('Welcome to ResumeFit 👋')
 st.markdown('Helping you align your resume with your job aspirations!')
 
+image_url = 'https://pixabay.com/get/g6b8c4bbb6bcd5ee96361669ce1369a05fb61692044596b93efbb4432174e2a7ce06cd87035b23fc49ee8dd8c9cdd256463298c8c55de56bb4f5e7e2fa7a1c7d2_1280.png'
+st.image(image_url, caption='HR Process - Image courtesy of Pixabay', width=700)
+
+
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     st.error("OpenAI API key is not set. Please set it in your environment variables.")
