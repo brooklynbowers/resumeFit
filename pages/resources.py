@@ -14,7 +14,7 @@ Explore various resources to enhance your professional skills. From online cours
 """)
 
 # Cell 3: Function to generate text using OpenAI
-def analyze_text(text):
+def compare_resume_to_job_description_resources(resume_text, job_description_text):
     if not api_key:
         st.error("OpenAI API key is not set. Please set it in your environment variables.")
         return
@@ -25,7 +25,7 @@ def analyze_text(text):
     # Instructions for the AI (adjust if needed)
     messages = [
         {"role": "system", "content": "You are an assistant who helps find a variety of resources for individuals looking to level up their skills and land a new job."},
-        {"role": "user", "content": f"I want to update my current resume based on the job description. Based on the resume and job descriptions, please recommend the following and explain why they would be beneficial to use or learn: 1. online courses, 2. recommended books, 3. professional networks, 4. interview preperation tools. Give each section as a header with emojis: Online Courses 👩‍🏫🎓, Recommended Books 📚, Professional Networks 👥🌐, Interview Preparation Tools 💼😎. Give 3 to 4 examples of each type of resources and provide links if applicable\n{text}"}
+        {"role": "user", "content": f"I want to update my current resume based on the job description. Based on the resume and job descriptions, please recommend the following and explain why they would be beneficial to use or learn: 1. online courses, 2. recommended books, 3. professional networks, 4. interview preperation tools. Give each section as a header with emojis: Online Courses 👩‍🏫🎓, Recommended Books 📚, Professional Networks 👥🌐, Interview Preparation Tools 💼😎. Give 3 to 4 examples of each type of resources and provide links if applicable\n{resume_text, job_description_text}"}
     ]
 
     response = client.chat.completions.create(
@@ -42,7 +42,7 @@ job_description_text = st.text_area("Paste the job description here:", height=30
 # Button to trigger the analysis
 if st.button('Analyze Resume'):
     with st.spinner('Analyzing...'):
-        result = compare_resume_to_job_description(resume_text, job_description_text)
+        result = compare_resume_to_job_description_resources(resume_text, job_description_text)
         if result:
             st.write(result)
 
