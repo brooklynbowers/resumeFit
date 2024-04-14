@@ -13,7 +13,7 @@ st.image(image_url, caption='HR Process - Image courtesy of Pixabay', width=535)
 # Possibly set up some initial session state variables or app-wide configurations here
 # ...
 
-# The main app.py can remain minimal because the content is in separate pages
+# The main homepage.py can remain minimal because the content is in separate pages
 st.sidebar.markdown('## Navigation')
 st.sidebar.info('Use the sidebar to navigate to different pages of the app.')
 
