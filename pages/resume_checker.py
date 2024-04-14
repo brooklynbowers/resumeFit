@@ -2,34 +2,33 @@ import streamlit as st
 import openai
 import os
 
-# Get your OpenAI API key from environment variables
+# Ensure the OpenAI API key is set
 api_key = os.getenv("OPENAI_API_KEY")
-
-# Ensure that api_key is set before proceeding
 if not api_key:
     st.error("OpenAI API key is not set. Please set it in your environment variables.")
     st.stop()
 
-def compare_resume_to_job_description(resume_text, job_description_text):
-    prompt = f"""
-    Compare the following resume with the job description and identify the skill gaps.
-    Provide suggestions for improvement and estimate how qualified the individual is for the job, providing a percentage.
-    
-    Resume:
-    {resume_text}
+# Initialize the OpenAI client
+client = openai.OpenAI(api_key=api_key)
 
-    Job Description:
-    {job_description_text}
+def compare_resume_to_job_description(resume_text, job_description_text):
+    # Prepare the prompt for the AI
+    prompt = f"""
+    Resume: {resume_text}
+    
+    Job Description: {job_description_text}
+    
+    Compare the resume and the job description. Identify skill gaps and estimate how qualified the individual is for the job. Provide a detailed analysis including the qualification percentage.
     """
     
     try:
-        # Call the OpenAI API using the updated method
-        response = openai.Completion.create(
-            model="text-davinci-003",  # Ensure you are using a valid model ID
+        # Call the OpenAI API using the updated method with specified parameters
+        response = client.Completion.create(
+            model="gpt-3.5-turbo",  # Using the specific model
             prompt=prompt,
             max_tokens=500,
-            temperature=0.5,
-            api_key=api_key  # Pass the API key directly here
+            temperature=0,  # Set temperature to 0 for consistency
+            stop=["\n"]  # Assuming you want to stop the response at the first newline
         )
         
         # Extract the response
