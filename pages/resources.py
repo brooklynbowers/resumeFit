@@ -31,3 +31,6 @@ def skills_resources_page():
     - [Pramp](https://www.pramp.com) for practicing mock interviews
     - [Interviewing.io](https://interviewing.io) for anonymous interview practice
     """)
+
+if __name__ == "__main__":
+    skills_resources_page()
