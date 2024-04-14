@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import openai
 import os
 
 # Ensure the OpenAI API key is set
@@ -8,9 +8,7 @@ if not api_key:
     st.error("OpenAI API key is not set. Please set it in your environment variables.")
     st.stop()
 
-# Initialize the OpenAI client
-client = openai.OpenAI(api_key=api_key)
-
+# Initialize the OpenAI API
 def compare_resume_to_job_description(resume_text, job_description_text):
     # Prepare the prompt for the AI
     prompt = f"""
@@ -22,17 +20,18 @@ def compare_resume_to_job_description(resume_text, job_description_text):
     """
     
     try:
-        # Call the OpenAI API using the updated method with specified parameters
+        # Call the OpenAI API using the updated method
         response = openai.Completion.create(
             model="gpt-3.5-turbo",  # Using the specific model
             prompt=prompt,
             max_tokens=500,
             temperature=0,  # Set temperature to 0 for consistency
-            stop=["\n"]  # Assuming you want to stop the response at the first newline
+            stop=["\n"],  # Assuming you want to stop the response at the first newline
+            api_key=api_key  # Ensure to pass the API key
         )
         
         # Extract the response
-        return response.choices[0].text.strip()
+        return response['choices'][0]['text'].strip()
 
     except Exception as e:  # This will catch any exception
         st.error(f"Error calling the OpenAI API: {e}")
