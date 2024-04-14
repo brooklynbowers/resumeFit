@@ -1,5 +1,4 @@
 import streamlit as st
-import openai
 import os
 
 st.set_page_config(page_title='ResumeFit', page_icon=':briefcase:', layout='wide')
