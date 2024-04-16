@@ -1,4 +1,7 @@
 import streamlit as st
+from fpdf import FPDF
+
+st.set_page_config(page_title="Resume Creator", layout="wide")
 
 # Set up the page title and introduction
 st.title('Advanced Resume Creator 📝')
@@ -16,55 +19,56 @@ job_interests = st.text_input("What jobs are you interested in?")
 
 # User skills
 st.header('Skills')
-skills = st.text_input("List your skills relevant to the job you are interested in.")
+skills = st.text_area("List your skills relevant to the job you are interested in.")
 
-# User education
-st.header('Education')
-education_entries = st.session_state.get('education_entries', [])
-education_entry = {'degree': '', 'institution_name': '', 'graduation_year': ''}
-degree = st.text_input("Highest Degree Earned", key="degree")
-institution_name = st.text_input("Institution Name", key="institution")
-graduation_year = st.text_input("Graduation Year", key="grad_year")
+# Section for adding multiple educations
+st.header("Education Details")
+education_list = st.session_state.get('education_list', [])
+degree = st.text_input("Degree")
+institution = st.text_input("Institution")
+grad_year = st.text_input("Graduation Year")
+if st.button('Add Education'):
+    education_list.append({'degree': degree, 'institution': institution, 'grad_year': grad_year})
+    st.session_state.education_list = education_list
+    st.success("Added: {} from {}".format(degree, institution))
 
-if st.button('Add Another Education'):
-    education_entries.append({'degree': degree, 'institution_name': institution_name, 'graduation_year': graduation_year})
-    st.session_state.education_entries = education_entries
-    st.experimental_rerun()
+# Section for adding multiple job experiences
+st.header("Job Experiences")
+experience_list = st.session_state.get('experience_list', [])
+job_title = st.text_input("Job Title", key="job")
+company = st.text_input("Company Name", key="company")
+years = st.text_input("Years Worked", key="years")
+job_skills = st.text_area("Skills Used", key="skills")
+if st.button('Add Job Experience'):
+    experience_list.append({'job_title': job_title, 'company': company, 'years': years, 'skills': job_skills})
+    st.session_state.experience_list = experience_list
+    st.success("Added: {} at {}".format(job_title, company))
 
-# User experience
-st.header('Professional Experience')
-experience_entries = st.session_state.get('experience_entries', [])
-experience_entry = {'job_title': '', 'company_name': '', 'years_worked': '', 'job_skills_used': ''}
-job_title = st.text_input("Job Title", key="job_title")
-company_name = st.text_input("Company Name", key="company")
-years_worked = st.text_input("Years Worked", key="years")
-job_skills_used = st.text_input("Skills Used in This Job", key="skills")
-
-if st.button('Add Another Job Experience'):
-    experience_entries.append({'job_title': job_title, 'company_name': company_name, 'years_worked': years_worked, 'job_skills_used': job_skills_used})
-    st.session_state.experience_entries = experience_entries
-    st.experimental_rerun()
-
-# Function to format the resume
-def generate_resume(details, educations, experiences):
-    education_formatted = "\n".join(f"- **Degree:** {edu['degree']}, **Institution:** {edu['institution_name']}, **Year:** {edu['graduation_year']}" for edu in educations)
-    experience_formatted = "\n".join(f"- **Job Title:** {exp['job_title']}, **Company:** {exp['company_name']}, **Years:** {exp['years_worked']}, **Skills:** {exp['job_skills_used']}" for exp in experiences)
+# Function to create PDF resume
+def create_pdf(details, educations, experiences):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size = 12)
     
-    resume_template = f"""
-    **Name:** {details['name']}
-    **Email:** {details['email']}
-    **LinkedIn:** {details['linkedin']}
-    **Interested Positions:** {details['job_interests']}
-    **Skills:** {details['skills']}
-    **Education:**
-    {education_formatted}
-    **Professional Experience:**
-    {experience_formatted}
-    """
-    return resume_template
+    pdf.cell(200, 10, txt="Resume", ln=True, align='C')
+    pdf.cell(200, 10, txt="Name: " + details['name'], ln=True)
+    pdf.cell(200, 10, txt="Email: " + details['email'], ln=True)
+    pdf.cell(200, 10, txt="LinkedIn: " + details['linkedin'], ln=True)
+    pdf.cell(200, 10, txt="Job Interests: " + details['job_interests'], ln=True)
+    pdf.cell(200, 10, txt="Skills: " + details['skills'], ln=True)
+    
+    pdf.cell(200, 10, txt="Education:", ln=True)
+    for edu in educations:
+        pdf.cell(200, 10, txt="- {} at {}, {}".format(edu['degree'], edu['institution'], edu['grad_year']), ln=True)
+    
+    pdf.cell(200, 10, txt="Professional Experience:", ln=True)
+    for exp in experiences:
+        pdf.cell(200, 10, txt="- {} at {} ({} years). Skills: {}".format(exp['job_title'], exp['company'], exp['years'], exp['skills']), ln=True)
 
-# Button to generate resume
-if st.button('Generate Resume'):
+    return pdf
+
+# Button to generate and download PDF resume
+if st.button('Generate and Download PDF Resume'):
     user_details = {
         'name': name,
         'email': email,
@@ -72,8 +76,17 @@ if st.button('Generate Resume'):
         'job_interests': job_interests,
         'skills': skills,
     }
+    pdf = create_pdf(user_details, st.session_state.get('education_list', []), st.session_state.get('experience_list', []))
+    pdf.output('resume.pdf')
+    with open('resume.pdf', "rb") as pdf_file:
+        PDFbyte = pdf_file.read()
+    st.download_button(label="Download PDF", data=PDFbyte, file_name="resume.pdf", mime='application/pdf')
 
-    resume = generate_resume(user_details, st.session_state.education_entries, st.session_state.experience_entries)
-    st.subheader('Your Generated Resume')
-    st.write(resume)
+# Display added data for verification
+st.subheader("Added Education")
+for edu in st.session_state.get('education_list', []):
+    st.text(f"{edu['degree']} from {edu['institution']} in {edu['grad_year']}")
 
+st.subheader("Added Job Experiences")
+for exp in st.session_state.get('experience_list', []):
+    st.text(f"{exp['job_title']} at {exp['company']} for {exp['years']} years. Skills: {exp['skills']}")
