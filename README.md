@@ -2,8 +2,6 @@
 
 *Compare a resume against a job description*
 
-\
-
 ---
 
 ### **Identifying Skills and Qualifications**
@@ -16,8 +14,6 @@
     - "Experienced in Java programming" vs
     - "Java development proficiency"
   - Similarly, job descriptions might list required skills in various ways
-
-\
 
 **Contextual Understanding:**
 
@@ -39,16 +35,10 @@ For this project, we need the AI to be able to understand context to differentia
     - *Highly organized*
     - *Innovative thinker*
 
-\
-
-
-
 ---
-
 
 ### **Comparing the Extracted Information**
 
-\
 **Matching Varied Expressions:**
 
 The system must recognize when different expressions refer to the same skill or qualification.
@@ -58,8 +48,6 @@ The system must recognize when different expressions refer to the same skill or 
     - i.e., recognizing that experience in React is relevant to a job asking for JavaScript framework experience
   - Levels of expertise.
 
-\
-
 **Identifying Skill Gaps:**
 
 The system must also recognize when and be able to highlight what's missing
@@ -67,16 +55,12 @@ The system must also recognize when and be able to highlight what's missing
     - Job descriptions are often vague  
     - Job descriptions might list many qualifications without specifying which are most important
 
-\
-
-
-
 ---
 
 
 
 ### **Estimating Qualification Level**
-\
+
 
 **Quantitative vs. Qualitative Assessment:**
 
@@ -84,22 +68,16 @@ Quantifying the match between a resume and a job description is very complex.
 - Giving a percentage may not give much information about the correlation between the two
   - i.e., if a candidate lacks one critical skill but has many less important ones
 
-\
-
 **Setting Thresholds:**
 
 Determining what percentage or level of match qualifies as a good fit for a job is another challenge
 - This is because different jobs and industries might require different thresholds for job entry
-
-\
-
 
 
 ---
 
 
 ###**Identifying Areas for Improvement**
-\
 
 
 **Personalized Recommendations:**
@@ -108,7 +86,6 @@ Providing tailored advice on improving a resume for a specific job description r
   - Being able to identifying gaps in the resume
   - Understanding the career path and industry trends
 
-\
 
 **Prioritization of Suggestions: **
 
@@ -117,12 +94,9 @@ Some resume gaps are more critical to address than others
     - This can be based on their current skill level
     - This can also be based on how important their missing skills are on the job application
 
-\
-
 ---
 
 ### **Ethical and Practical Considerations**
-\
 
 **Bias Mitigation:**
 
@@ -130,12 +104,6 @@ In order to provide an equal service to all users, we will need to ensure that t
   - This includes being mindful of how skills are valued
   - Also includes avoiding discrimination based on personal attributes
 
-\
-
 **User Privacy and Data Security:**
 
 Safeguarding user data, especially sensitive information in resumes, is very important. The system must be designed with privacy and security in mind.
-
-
-
-
