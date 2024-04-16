@@ -77,7 +77,7 @@ Determining what percentage or level of match qualifies as a good fit for a job 
 ---
 
 
-###**Identifying Areas for Improvement**
+### **Identifying Areas for Improvement**
 
 
 **Personalized Recommendations:**
