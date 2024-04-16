@@ -1,8 +1,8 @@
 import streamlit as st
 
 # Set up the page title and introduction
-st.title('Simple Resume Creator 📝')
-st.markdown('Welcome to the Simple Resume Creator. Fill in your details to generate your resume.')
+st.title('Advanced Resume Creator 📝')
+st.markdown('Welcome to the Advanced Resume Creator. Fill in your details to generate your resume, including multiple education and job experiences.')
 
 # User personal details input
 st.header('Personal Details')
@@ -20,31 +20,46 @@ skills = st.text_input("List your skills relevant to the job you are interested 
 
 # User education
 st.header('Education')
-education_level = st.text_input("Highest Degree Earned")
-graduation_year = st.text_input("Graduation Year")
-institution_name = st.text_input("Institution Name")
+education_entries = st.session_state.get('education_entries', [])
+education_entry = {'degree': '', 'institution_name': '', 'graduation_year': ''}
+degree = st.text_input("Highest Degree Earned", key="degree")
+institution_name = st.text_input("Institution Name", key="institution")
+graduation_year = st.text_input("Graduation Year", key="grad_year")
+
+if st.button('Add Another Education'):
+    education_entries.append({'degree': degree, 'institution_name': institution_name, 'graduation_year': graduation_year})
+    st.session_state.education_entries = education_entries
+    st.experimental_rerun()
 
 # User experience
 st.header('Professional Experience')
-job_title = st.text_input("Job Title")
-company_name = st.text_input("Company Name")
-years_worked = st.text_input("Years Worked")
-job_skills_used = st.text_input("Skills Used in This Job")
+experience_entries = st.session_state.get('experience_entries', [])
+experience_entry = {'job_title': '', 'company_name': '', 'years_worked': '', 'job_skills_used': ''}
+job_title = st.text_input("Job Title", key="job_title")
+company_name = st.text_input("Company Name", key="company")
+years_worked = st.text_input("Years Worked", key="years")
+job_skills_used = st.text_input("Skills Used in This Job", key="skills")
+
+if st.button('Add Another Job Experience'):
+    experience_entries.append({'job_title': job_title, 'company_name': company_name, 'years_worked': years_worked, 'job_skills_used': job_skills_used})
+    st.session_state.experience_entries = experience_entries
+    st.experimental_rerun()
 
 # Function to format the resume
-def generate_resume(details):
+def generate_resume(details, educations, experiences):
+    education_formatted = "\n".join(f"- **Degree:** {edu['degree']}, **Institution:** {edu['institution_name']}, **Year:** {edu['graduation_year']}" for edu in educations)
+    experience_formatted = "\n".join(f"- **Job Title:** {exp['job_title']}, **Company:** {exp['company_name']}, **Years:** {exp['years_worked']}, **Skills:** {exp['job_skills_used']}" for exp in experiences)
+    
     resume_template = f"""
     **Name:** {details['name']}
     **Email:** {details['email']}
     **LinkedIn:** {details['linkedin']}
     **Interested Positions:** {details['job_interests']}
     **Skills:** {details['skills']}
-    **Education:** {details['education_level']}, {details['institution_name']}, {details['graduation_year']}
+    **Education:**
+    {education_formatted}
     **Professional Experience:**
-    - **Position:** {details['job_title']}
-    - **Company:** {details['company_name']}
-    - **Duration:** {details['years_worked']}
-    - **Skills Used:** {details['job_skills_used']}
+    {experience_formatted}
     """
     return resume_template
 
@@ -56,17 +71,9 @@ if st.button('Generate Resume'):
         'linkedin': linkedin,
         'job_interests': job_interests,
         'skills': skills,
-        'education_level': education_level,
-        'graduation_year': graduation_year,
-        'institution_name': institution_name,
-        'job_title': job_title,
-        'company_name': company_name,
-        'years_worked': years_worked,
-        'job_skills_used': job_skills_used,
     }
 
-    resume = generate_resume(user_details)
+    resume = generate_resume(user_details, st.session_state.education_entries, st.session_state.experience_entries)
     st.subheader('Your Generated Resume')
     st.write(resume)
-
 
