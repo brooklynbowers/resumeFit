@@ -1,4 +1,4 @@
-### **This section analyzes the following goal:**
+### **This project analyzes the following goal:**
 
 *Compare a resume against a job description*
 
